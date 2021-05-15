@@ -1,8 +1,13 @@
 package service
 
-import "github.com/Arystan2701/book-store/pkg/repository"
+import (
+	book_store "github.com/Arystan2701/book-store"
+	"github.com/Arystan2701/book-store/pkg/repository"
+)
 
 type Authorization interface {
+	CreateUser(user book_store.User) (int, error)
+	GenerateToken(email, password string) (string, error)
 }
 
 type Service struct {
@@ -10,5 +15,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }

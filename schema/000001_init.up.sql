@@ -1,14 +1,14 @@
-create table users
+CREATE TABLE users
 (
-    id            serializable       not null unique,
-    user_name     varchar(255) not null unique,
+    id            serial not null unique,
+    username      varchar(255) not null unique,
     email         varchar(255) not null unique,
     password_hash varchar(255) not null
 );
 
-create table moderators
+CREATE TABLE moderators
 (
-    id            serializable       not null unique,
+    id            serial not null unique,
     email         varchar(255) not null unique,
     password_hash varchar(255) not null,
     role          varchar(255) not null
