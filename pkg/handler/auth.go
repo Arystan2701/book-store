@@ -37,7 +37,9 @@ func (h *Handler) userSignIn(c *gin.Context) {
 		internalError(c, err)
 		return
 	}
-	success(c, token)
+	success(c, gin.H{
+		"access_token": token,
+	})
 }
 
 func (h *Handler) moderatorSignIn(c *gin.Context) {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	book_store "github.com/Arystan2701/book-store"
 	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
 )
 
 type AuthPostgres struct {
@@ -26,7 +25,6 @@ func (a *AuthPostgres) CreateUser(user book_store.User) (int, error) {
 }
 
 func (a *AuthPostgres) GetUser(email, password string) (book_store.User, error) {
-	logrus.Info(email, "\t", password)
 	var user book_store.User
 	query := fmt.Sprintf("SELECT id FROM  %s WHERE email=$1 AND password_hash=$2", userTable)
 	err := a.db.Get(&user, query, email, password)
