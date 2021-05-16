@@ -18,7 +18,9 @@ const (
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	UserID int `json:"user_id"`
+	UserID      int    `json:"user_id,omitempty"`
+	ModeratorID int    `json:"moderator_id,omitempty"`
+	Role        string `json:"role,omitempty"`
 }
 
 type AuthService struct {
@@ -41,11 +43,11 @@ func (a *AuthService) GenerateToken(email, password string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
-		jwt.StandardClaims{
+		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
-		user.ID,
+		UserID: user.ID,
 	})
 
 	return token.SignedString([]byte(signingKey))
@@ -75,4 +77,22 @@ func GeneratePasswordHash(password string) string {
 	hash.Write([]byte(password))
 
 	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
+}
+
+func (a *AuthService) GenerateModeratorToken(email, password string) (string, error) {
+	moderator, err := a.repo.GetModerator(email, GeneratePasswordHash(password))
+	if err != nil {
+		return "", err
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(tokenTTL).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		ModeratorID: moderator.ID,
+		Role:        moderator.Role,
+	})
+
+	return token.SignedString([]byte(signingKey))
 }

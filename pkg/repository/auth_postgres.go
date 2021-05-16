@@ -30,3 +30,10 @@ func (a *AuthPostgres) GetUser(email, password string) (book_store.User, error) 
 	err := a.db.Get(&user, query, email, password)
 	return user, err
 }
+
+func (a *AuthPostgres) GetModerator(email, password string) (book_store.Moderator, error) {
+	var moderator book_store.Moderator
+	query := fmt.Sprintf("SELECT id,email, role FROM  %s WHERE email=$1 AND password_hash=$2", moderatorTable)
+	err := a.db.Get(&moderator, query, email, password)
+	return moderator, err
+}

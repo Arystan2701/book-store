@@ -43,5 +43,18 @@ func (h *Handler) userSignIn(c *gin.Context) {
 }
 
 func (h *Handler) moderatorSignIn(c *gin.Context) {
+	var request signInInput
+	if err := c.ShouldBindJSON(&request); err != nil {
+		badRequest(c, err)
+		return
+	}
 
+	token, err := h.services.GenerateModeratorToken(request.Email, request.Password)
+	if err != nil {
+		internalError(c, err)
+		return
+	}
+	success(c, gin.H{
+		"access_token": token,
+	})
 }

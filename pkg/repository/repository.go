@@ -8,6 +8,7 @@ import (
 type Authorization interface {
 	CreateUser(user book_store.User) (int, error)
 	GetUser(email, password string) (book_store.User, error)
+	GetModerator(email, password string) (book_store.Moderator, error)
 }
 
 type Moderator interface {

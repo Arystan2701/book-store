@@ -9,6 +9,7 @@ type Authorization interface {
 	CreateUser(user book_store.User) (int, error)
 	GenerateToken(email, password string) (string, error)
 	ParseToken(token string) (int, error)
+	GenerateModeratorToken(email, password string) (string, error)
 }
 
 type Moderator interface {
