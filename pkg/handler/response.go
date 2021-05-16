@@ -62,8 +62,10 @@ func created(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusCreated, response)
 }
 
-func unauthorized(c *gin.Context, err *BaseError) {
-	c.JSON(http.StatusUnauthorized, processError(err))
+func unauthorized(c *gin.Context, message string) {
+	c.JSON(http.StatusUnauthorized, gin.H{
+		"message": message,
+	})
 }
 
 func forbidden(c *gin.Context, err *BaseError) {
