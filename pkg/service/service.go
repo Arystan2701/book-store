@@ -11,12 +11,19 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
+type Moderator interface {
+	GetModerators() ([]book_store.Moderator, error)
+	CreateModerator(request book_store.CreateModeratorInput) (int, error)
+}
+
 type Service struct {
 	Authorization
+	Moderator
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		Moderator:     NewModeratorService(repos.Moderator),
 	}
 }

@@ -10,12 +10,19 @@ type Authorization interface {
 	GetUser(email, password string) (book_store.User, error)
 }
 
+type Moderator interface {
+	GetModerators() ([]book_store.Moderator, error)
+	CreateModerator(request book_store.CreateModeratorInput) (int, error)
+}
+
 type Repository struct {
 	Authorization
+	Moderator
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		Moderator:     NewModeratorPostgre(db),
 	}
 }
