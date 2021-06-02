@@ -5,6 +5,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary UserSignUp
+// @Tags auth
+// @Description create user account
+// @ID create-account
+// @Accept  json
+// @Produce  json
+// @Param input body book_store.User true "account info"
+// @Success 200,201 {integer} integer 1
+// @Failure 400,404 {object} Response
+// @Failure 500 {object} Response
+// @Failure default {object} Response
+// @Router /auth/sign-up [post]
 func (h *Handler) userSignUp(c *gin.Context) {
 	var request book_store.User
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -25,6 +37,18 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// @Summary UserSignIn
+// @Tags auth
+// @Description authorization user account
+// @ID authorization-account
+// @Accept  json
+// @Produce  json
+// @Param input body signInInput true "sign in form"
+// @Success 200,201 {object} Response
+// @Failure 400,404 {object} Response
+// @Failure 500 {object} Response
+// @Failure default {object} Response
+// @Router /auth/sign-in [post]
 func (h *Handler) userSignIn(c *gin.Context) {
 	var request signInInput
 	if err := c.ShouldBindJSON(&request); err != nil {
